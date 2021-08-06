@@ -1,0 +1,19 @@
+stages:
+- name: compile
+  steps:
+  - runScriptConfig:
+      image: maven:v1
+      shellScript: mvn clean package
+- name: publish
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./docker/Dockerfile
+      buildContext: .
+      tag: yanzhengui/demo:v1
+      registry: 127.0.0.1:34954
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./docker/deployment.yaml
+timeout: 60
+notification: {}
